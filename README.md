@@ -10,7 +10,6 @@ Bienvenue dans mon repository **Libft** ! Ce projet fait partie du cursus de l'Ã
 - [Utilisation](#utilisation)
 - [Structure du projet](#structure-du-projet)
 - [Contributions](#contributions)
-- [Licence](#licence)
 
 ## Ã€ propos
 
