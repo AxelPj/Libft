@@ -12,58 +12,28 @@
 
 #include "libft.h"
 
-static int	count_occ(char const *s1, char const *set)
-{
-	size_t	i;
-	size_t	j;
-	size_t	count;
-
-	count = 0;
-	i = 0;
-	while (s1[i])
-	{
-		j = 0;
-		while (s1[i + j] != set[j] && set[j])
-		{
-			j++;
-		}
-		if (s1[i] == set[j])
-			count++;
-		i++;
-	}
-	return (count);
-}
-
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	size_t	i;
-	size_t	j;
-	size_t	k;
-	char	*s;
+	size_t	start;
+	size_t	end;
+	char	*result;
+	size_t	len_res;
 
-	i = 0;
-	k = 0;
-	s = (char *)malloc((ft_strlen(s1) - count_occ(s1, set) + 1) * sizeof(char));
-	while (s1[i])
-	{
-		j = 0;
-		while (s1[i] != set[j] && set[j])
-			j++;
-		if (set[j] == '\0')
-		{
-			s[k] = s1[i];
-			k++;
-		}
-		i++;
-	}
-	s[i] = '\0';
-	return (s);
+	end = ft_strlen(s1) - 1;	
+	start = 0;
+	if (!s1 || !set)
+		return (NULL);
+	while (s1[start] && ft_strchr(set, s1[start]))
+		start++;
+	while (end > start && ft_strchr(set, s1[end]))
+		end--;
+	len_res = end - start + 1;
+	if (len_res == 0)
+		return (ft_strdup(""));
+	result = (char *)malloc (len_res + 1);
+	if (!result)
+		return (NULL);
+	ft_strlcpy (result, s1 + start, len_res + 1);
+	result[len_res] = '\0';
+	return (result);
 }
-
-/* int main (void)
-{
-	char *s1 = "bonjour";
-	char *set = "bo";
-	
-	printf("%s", ft_strtrim(s1, set));
-} */

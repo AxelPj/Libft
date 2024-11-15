@@ -12,69 +12,49 @@
 
 #include "libft.h"
 
-static char	*str_rev(char *str)
+static int	count_len(long nb)
 {
-	int	i;
-	int	j;
-	int	temp;
+	size_t	len;
 
-	temp = 0;
-	j = 0;
-	i = 0;
-	while (str[j])
+	len = 0;
+	if (nb <= 0)
+		len++;
+	while (nb != 0)
 	{
-		j++;
+		nb = nb / 10;
+		len++;
 	}
-	j--;
-	while (i < j)
-	{
-		temp = str[i];
-		str[i] = str[j];
-		str[j] = temp;
-		i++;
-		j--;
-	}
-	return (str);
+	return (len);
 }
+
+static void	print_result(size_t len, size_t i, long nb, char *result)
+{
+	while (len > i)
+	{
+		result[len - 1] = nb % 10 + '0';
+		nb = nb / 10;
+		len--;
+	}
+}
+
 char	*ft_itoa(int n)
 {
+	size_t	i;
+	char	*result;
+	size_t	len;
 	long	nb;
-	int		count;
-	long	temp;
-	int		sign;
-	int		i;
-	char*result;
 
-	nb = (long) n;
-	count = 1;
-	temp = nb;
-	sign = 0;
 	i = 0;
-	if (nb == 0)
-	{
-		result = malloc((2) * sizeof(char));
-		result[0] = '\0';
-		result[1] = '\0';
-		return (result);
-	}
-	if (temp != 0)
-	{
-		temp = temp / 10;
-		count++;
-	}
+	nb = (long) n;
+	len = count_len (nb);
+	result = malloc((len + 1) * sizeof (char));
 	if (nb < 0)
 	{
-		sign = 1;
-		nb = nb * - 1;
+		result[0] = '-';
+		i = 1;
+		nb = -nb;
 	}
-	result = malloc(((count) + 1 + sign) * sizeof (char));
-	if (!(result))
-		return (0);
-	while (count <= 0)
-	{
-		result[i] = nb % 10 + '0';
-		nb = nb / 10;
-		i++;
-	}
-	return (str_rev(result));
+	print_result(len, i, nb, result);
+	result[len] = '\0';
+	return (result);
 }

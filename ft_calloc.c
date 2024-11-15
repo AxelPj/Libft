@@ -17,10 +17,13 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	void	*tab;
 	size_t	i;
 
+	i = 0;
+	if (size > 2147483648 / nmemb)
+		return (NULL);
 	tab = malloc(nmemb * size);
 	if (!tab)
 		return (NULL);
-	while (i <= nmemb * size)
+	while (i <= nmemb)
 	{
 		((char *)tab)[i] = 0;
 		i++;

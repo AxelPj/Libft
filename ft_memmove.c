@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "stdlib.h"
+#include "libft.h"
 
 static void	*ft_memmove_right(void *dest, const void *src, size_t n)
 {
@@ -31,19 +31,15 @@ static void	*ft_memmove_right(void *dest, const void *src, size_t n)
 
 static void	*ft_memmove_left(void *dest, const void *src, size_t n)
 {
-	size_t				i;
 	const unsigned char	*src2;
 	unsigned char		*dest2;
 
 	src2 = (const unsigned char *) src;
 	dest2 = (unsigned char *) dest;
-	i = n - 1;
-	while (i != (size_t)(-1))
+	while (n > 0)
 	{
-		dest2[i] = src2[i];
-		if (i == 0)
-			break ;
-		i--;
+		n--;
+		dest2[n] = src2[n];
 	}
 	return (dest);
 }
