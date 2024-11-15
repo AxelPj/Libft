@@ -47,7 +47,7 @@ Des fonctions utiles non présentes dans la bibliothèque standard :
 Pour cloner ce repository et compiler la bibliothèque :
 
 ```
-git clone https://github.com/ton-utilisateur/libft.git
+git clone https://github.com/AxelPj/libft.git
 cd libft
 make
 ```
