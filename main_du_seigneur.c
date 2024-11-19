@@ -6,7 +6,7 @@
 /*   By: axelpeti <axelpeti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 17:03:09 by axelpeti          #+#    #+#             */
-/*   Updated: 2024/11/15 10:43:45 by axelpeti         ###   ########.fr       */
+/*   Updated: 2024/11/19 10:58:10 by axelpeti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "libft.h"
 #include <bsd/string.h>
 
-/* // Fonction pour test strmapi
+ // Fonction pour test strmapi
 char convert_to_uppercase(unsigned int i, char c) 
 {
     if (islower(c)) 
@@ -41,10 +41,29 @@ void convert_to_lowercase2(unsigned int i, char *c)
 {
     if (isupper(*c)) 
         *c = tolower(*c);
-} */
+}
+
+void print_content(void *content)
+{
+    if (content)
+        printf("fonction qui print 'content': %s\n\n", (char *)content);
+}
+void *transform_content(void *content) {
+    char *new_content = malloc(strlen(content) + 12); // Espace pour " - transformé"
+    if (!new_content) return NULL;
+    sprintf(new_content, "%s - transformé", (char *)content);
+    return new_content;
+}
+
+// Fonction de suppression du contenu (libération de la mémoire)
+void del_content(void *content)
+{
+    printf("Suppression de: %s\n", (char *)content); // Affiche avant suppression
+    free(content);
+}
 
 int main(void)
-{
+ {
     //------------------ Test ft_isalpha ------------------//
     printf("\n--------------- Test ft_isalpha ---------------\n");
     printf("test 'a' || ft_isalpha: %i || isalpha: %i\n", ft_isalpha('a'), isalpha('a'));
@@ -350,7 +369,6 @@ int main(void)
     
     
     //---------------test ft_strmapi---------------//
-    /*     
     printf("---------------test ft_strmapi---------------\n");
     char *capitale_mapi;
     char *minuscule_mapi;
@@ -372,8 +390,6 @@ int main(void)
     
     printf("chaine en majuscule : %s\n", minuscule_striteri);
     printf("chaine en minuscule : %s\n", capitale_striteri);
-    */
-    
     
     //---------------test ft_putchar_fd---------------//
     printf("---------------test ft_putchar_fd---------------\n");
@@ -407,4 +423,67 @@ int main(void)
     
     ft_putnbr_fd(-2147483648, 1);  // Affiche l'entier le plus bas pour un int (cas limite)
     printf("\n\n");
+
+    //---------------test Liste Chaine---------------//
+    t_list *list = NULL;
+    t_list *first = list;
+    int size;
+
+    t_list *new_node1 = ft_lstnew("Premier, noeud");
+    ft_lstadd_front(&list, new_node1);
+
+    t_list *new_node2 = ft_lstnew("Deuxieme noeud");
+    ft_lstadd_back(&list, new_node2);
+
+    t_list *new_node3 = ft_lstnew("Troisieme, noeud");
+    ft_lstadd_back(&list, new_node3);
+
+    t_list *new_node4 = ft_lstnew("Quatrieme, noeud");
+    ft_lstadd_back(&list, new_node4);
+    printf("---------------Avant ft_lstmap et ft_lstiter---------------\n\n");
+    t_list *tmp = list;
+    while (tmp) {
+        printf("Contenu du noeud avant modification : %s\n", (char *)tmp->content);
+        tmp = tmp->next;
+    }
+
+    // Application de ft_lstmap pour transformer la liste
+    t_list *mapped_list = ft_lstmap(list, transform_content, del_content);
+
+    // Affichage de la nouvelle liste après transformation
+    printf("\n---------------Après ft_lstmap et ft_lstiter---------------\n\n");
+    tmp = mapped_list;
+    while (tmp) {
+        printf("Contenu du noeud après modification : %s\n", (char *)tmp->content);
+        tmp = tmp->next;
+    }
+    printf("\n");
+    size = ft_lstsize(list);
+    t_list *last = ft_lstlast(list);
+    printf("\n---------------test ft_lstast---------------\n\n");
+    printf("Dernier noeud : %s\n\n", (char *)last->content);
+    
+    printf("\n---------------test ft_lstnew, ft_lstaddfront, ft_lstadd_back, ft_lstsize---------------\n\n");
+    // Affichage du contenu de chaque noeud avant suppression
+    while (list)
+    {
+        printf("Contenu de mon noeud : %s\n", (char *)list->content);
+        list = list->next;
+    }
+    printf("Nombre de noeud : %i\n\n", size);
+
+    // Réinitialisation de la liste
+    list = first;
+
+    printf("---------------test ft_lstdelone (print le noeud puis free)---------------\n\n");
+    printf("Adresse avant appel à la fonction et free: %p\n\n", (char *)new_node1->content);
+    ft_lstdelone(new_node1, print_content);
+    printf("Adresse après appel à la fonction et free: %p\n\n", (char *)new_node1);
+
+    new_node1 = ft_lstnew("Premier, noeud");
+    ft_lstadd_front(&list, new_node1);
+
+    printf("---------------test ft_lstclear (print les content puis free la list)---------------\n\n");
+    ft_lstclear(&list, print_content);
+    printf("Liste après appel à la fonction et free : %p\n", (void *)list);
 }

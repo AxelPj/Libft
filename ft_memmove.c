@@ -46,8 +46,10 @@ static void	*ft_memmove_left(void *dest, const void *src, size_t n)
 
 void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	if (n == 0 || !dest || !src || dest == src)
+	if (n == 0)
 		return (dest);
+	if (!dest && !src)
+		return (NULL);
 	if (dest < src)
 		ft_memmove_right (dest, src, n);
 	else
